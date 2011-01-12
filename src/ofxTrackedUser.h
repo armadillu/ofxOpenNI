@@ -5,6 +5,13 @@
 #include <XnCppWrapper.h>
 #include "ofMain.h"
 
+
+#define NUM_COLOR_IDS	6
+static unsigned char uniqueColors[NUM_COLOR_IDS][3] = { 
+														{255,0,0}, {0,255,0}, {0,0,255},		// red, green, blue
+														{255,255,0}, {255,0,255}, {0,255,255},
+														};
+
 struct ofxLimb {
 	ofxLimb(XnSkeletonJoint nStartJoint, XnSkeletonJoint nEndJoint) 
 		:start_joint(nStartJoint)
@@ -20,18 +27,42 @@ struct ofxLimb {
 	XnPoint3D position[2];
 	bool found;
 	
-	void debugDraw() {
+	void debugDraw(XnUserID ID) {
+		
 		if(!found)
 			return;
-		glPushMatrix();
-		glLineWidth(5);
-		glColor3f(1,0,0);
+		
+		int index = ID % NUM_COLOR_IDS;
+		
+		glLineWidth(12);
+		glPointSize(12);
+		glColor3ub(0,0,0);
+
+		glBegin(GL_POINTS);
+			glVertex2i(position[0].X, position[0].Y);
+			glVertex2i(position[1].X, position[1].Y);
+		glEnd();
+
 		glBegin(GL_LINES);
 			//std::cout << position[0].X << ", " << position[0].Y << std::endl;
 			glVertex2i(position[0].X, position[0].Y);
 			glVertex2i(position[1].X, position[1].Y);
 		glEnd();
-		glPopMatrix();
+
+		
+		glLineWidth(5);
+		glPointSize(5);
+		glColor3f( uniqueColors[index][0], uniqueColors[index][1], uniqueColors[index][2] );		
+		
+		glBegin(GL_POINTS);
+			glVertex2i(position[0].X, position[0].Y);
+			glVertex2i(position[1].X, position[1].Y);
+		glEnd();
+
+		glBegin(GL_LINES);
+			glVertex2i(position[0].X, position[0].Y);
+			glVertex2i(position[1].X, position[1].Y);
+		glEnd();
 	}
 	
 };

@@ -89,31 +89,31 @@ void ofxTrackedUser::updateLimb(ofxLimb& rLimb) {
 }
 
 void ofxTrackedUser::debugDraw() {
-	neck.debugDraw();
+	neck.debugDraw(id);
 	
 	// left arm + shoulder
-	left_shoulder.debugDraw();
-	left_upper_arm.debugDraw();
-	left_lower_arm.debugDraw();
+	left_shoulder.debugDraw(id);
+	left_upper_arm.debugDraw(id);
+	left_lower_arm.debugDraw(id);
 	
 	// right arm + shoulder
-	right_shoulder.debugDraw();
-	right_upper_arm.debugDraw();
-	right_lower_arm.debugDraw();
+	right_shoulder.debugDraw(id);
+	right_upper_arm.debugDraw(id);
+	right_lower_arm.debugDraw(id);
 	
 	// upper torso
-	left_upper_torso.debugDraw();
-	right_upper_torso.debugDraw();
+	left_upper_torso.debugDraw(id);
+	right_upper_torso.debugDraw(id);
 	
 	// left lower torso + leg
-	left_lower_torso.debugDraw();
-	left_upper_leg.debugDraw();
-	left_lower_leg.debugDraw();
+	left_lower_torso.debugDraw(id);
+	left_upper_leg.debugDraw(id);
+	left_lower_leg.debugDraw(id);
 
 	// right lower torso + leg
-	right_lower_torso.debugDraw();
-	right_upper_leg.debugDraw();
-	right_lower_leg.debugDraw();
+	right_lower_torso.debugDraw(id);
+	right_upper_leg.debugDraw(id);
+	right_lower_leg.debugDraw(id);
 	
-	hip.debugDraw();
+	hip.debugDraw(id);
 }

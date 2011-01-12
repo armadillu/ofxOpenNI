@@ -1,10 +1,9 @@
 #include "ofxImageGenerator.h"
 
-
 ofxImageGenerator::ofxImageGenerator(){
 }
 
-bool ofxImageGenerator::setup(ofxOpenNIContext * context){
+bool ofxImageGenerator::setup(ofxOpenNIContext * context, bool flipHorizontal){
 	_context = context;
 	
 	//Create image generator
@@ -21,14 +20,13 @@ bool ofxImageGenerator::setup(ofxOpenNIContext * context){
 		
 		//Set the input to VGA (standard is QVGA wich is not supported on the Kinect)
 		XnMapOutputMode mapMode; mapMode.nXRes = XN_VGA_X_RES; mapMode.nYRes = XN_VGA_Y_RES; mapMode.nFPS = 30;
-		nRetVal = image_generator.SetMapOutputMode(mapMode);
+		nRetVal = image_generator.SetMapOutputMode(mapMode);		
+		_imageTexture.allocate(mapMode.nXRes, mapMode.nYRes, GL_RGB);
+
+		//we might want to flip the image to satisfy the mirror-like interaction
+		image_generator.GetMirrorCap().SetMirror(flipHorizontal);
 		
-		_imageTexture.allocate(mapMode.nXRes, mapMode.nYRes, GL_RGB);		
-		imagePixels = new unsigned char[mapMode.nXRes * mapMode.nYRes * 3];
-		memset(imagePixels, 0, mapMode.nXRes * mapMode.nYRes * 3 * sizeof(unsigned char));
-		
-		image_generator.StartGenerating();	
-		
+		image_generator.StartGenerating();			
 		return true;
 	}
 }

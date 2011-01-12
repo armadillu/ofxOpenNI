@@ -4,6 +4,7 @@
 void testApp::setup(){
 	context.initFromXMLFile();
 	depth.setup(&context);
+	image.setup(&context);
 	user.setup(&context, &depth);
 }
 
@@ -15,12 +16,26 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	//depth.draw(0,0,640,480);
+
+	ofEnableAlphaBlending();
+	glEnable(GL_LINE_SMOOTH);
+	glEnable(GL_POINT_SMOOTH);
+	
+	depth.draw(0,0,640,480);
+	image.draw(640,0,640,480);
 	//user.draw();
+	
 	ofxTrackedUser* tracked = user.getTrackedUser(0);
 	if(tracked != NULL) {
-		tracked->debugDraw();
+		
+		tracked->debugDraw();	//on top of depth image
+		
+		glPushMatrix();
+			glTranslatef(640,0,0);	//on top of rgb image
+			tracked->debugDraw();
+		glPopMatrix();
 	}
+	
 }
 
 //--------------------------------------------------------------

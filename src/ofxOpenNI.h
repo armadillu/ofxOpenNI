@@ -1,4 +1,5 @@
 #include "ofxOpenNIContext.h"
 #include "ofxDepthGenerator.h"
+#include "ofxImageGenerator.h"
 #include "ofxUserGenerator.h"
 #include "ofxTrackedUser.h"
