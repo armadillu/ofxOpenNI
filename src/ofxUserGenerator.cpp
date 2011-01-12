@@ -2,6 +2,8 @@
 #include "ofxOpenNIMacros.h"
 #include "ofxTrackedUser.h"
 
+ofxUserGeneratorEvents ofxOpenNIEvents;
+
 // CALLBACKS
 // =============================================================================
 // Callback: New user was detected
@@ -12,6 +14,9 @@ void XN_CALLBACK_TYPE User_NewUser(
 )
 {
 	printf("New User %d\n", nID);
+	ofxOpenNIEvents.userArgs.userID = nID; 
+	ofNotifyEvent(ofxOpenNIEvents.newUser, ofxOpenNIEvents.userArgs);
+	
 	ofxUserGenerator* user = static_cast<ofxUserGenerator*>(pCookie);
 	if(user->needsPoseForCalibration()) {
 		user->startPoseDetection(nID);
@@ -29,6 +34,8 @@ void XN_CALLBACK_TYPE User_LostUser(
 )
 {
 	printf("Lost user %d\n", nID);
+	ofxOpenNIEvents.userArgs.userID = nID; 
+	ofNotifyEvent(ofxOpenNIEvents.lostUser, ofxOpenNIEvents.userArgs);
 }
 
 // Callback: Detected a pose
@@ -41,6 +48,9 @@ void XN_CALLBACK_TYPE UserPose_PoseDetected(
 {
 	ofxUserGenerator* user = static_cast<ofxUserGenerator*>(pCookie);
 	printf("Pose %s detected for user %d\n", strPose, nID);
+	ofxOpenNIEvents.userArgs.userID = nID; 
+	ofNotifyEvent(ofxOpenNIEvents.poseDetected, ofxOpenNIEvents.userArgs);
+
 	user->stopPoseDetection(nID);
 	user->requestCalibration(nID);
 }
@@ -54,6 +64,9 @@ void XN_CALLBACK_TYPE UserCalibration_CalibrationStart(
 )
 {
 	printf("Calibration started for user %d\n", nID);
+	ofxOpenNIEvents.userArgs.userID = nID; 
+	ofNotifyEvent(ofxOpenNIEvents.calibrationStarted, ofxOpenNIEvents.userArgs);
+
 }
 
 
@@ -65,10 +78,16 @@ void XN_CALLBACK_TYPE UserCalibration_CalibrationEnd(
 )
 {
 	ofxUserGenerator* user = static_cast<ofxUserGenerator*>(pCookie);
+	
+	ofxOpenNIEvents.userArgs.userID = nID; 
+	ofNotifyEvent(ofxOpenNIEvents.calibrationStarted, ofxOpenNIEvents.userArgs);
+	
 	if(bSuccess) {
-		user->startTracking(nID);
+		ofNotifyEvent(ofxOpenNIEvents.calibrationSucceeded, ofxOpenNIEvents.userArgs);
+		user->startTracking(nID);		
 	}
 	else {
+		ofNotifyEvent(ofxOpenNIEvents.calibrationFailed, ofxOpenNIEvents.userArgs);
 		if(user->needsPoseForCalibration()) {
 			user->startPoseDetection(nID);
 		}

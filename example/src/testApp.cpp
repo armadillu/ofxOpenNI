@@ -6,6 +6,19 @@ void testApp::setup(){
 	depth.setup(&context);
 	image.setup(&context);
 	user.setup(&context, &depth);
+
+	ofAddListener(ofxOpenNIEvents.newUser, this, &testApp::newUserEvent);
+	ofAddListener(ofxOpenNIEvents.lostUser, this, &testApp::lostUserEvent);
+	ofAddListener(ofxOpenNIEvents.poseDetected, this, &testApp::poseDetectedEvent);
+	ofAddListener(ofxOpenNIEvents.calibrationStarted, this, &testApp::calibrationStartedEvent);
+	ofAddListener(ofxOpenNIEvents.calibrationEnded, this, &testApp::calibrationEndedEvent);
+	ofAddListener(ofxOpenNIEvents.calibrationSucceeded, this, &testApp::calibrationSucceededEvent);
+	ofAddListener(ofxOpenNIEvents.calibrationFailed, this, &testApp::calibrationFailedEvent);
+	
+	ofEnableAlphaBlending();
+	glEnable(GL_LINE_SMOOTH);
+	glEnable(GL_POINT_SMOOTH);
+
 }
 
 //--------------------------------------------------------------
@@ -16,10 +29,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-
-	ofEnableAlphaBlending();
-	glEnable(GL_LINE_SMOOTH);
-	glEnable(GL_POINT_SMOOTH);
+	
 	
 	depth.draw(0,0,640,480);
 	image.draw(640,0,640,480);

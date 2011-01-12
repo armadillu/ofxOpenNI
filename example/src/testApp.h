@@ -20,6 +20,14 @@ class testApp : public ofBaseApp{
 		void mouseReleased(int x, int y, int button);
 		void windowResized(int w, int h);
 	
+		void newUserEvent(ofxUserGeneratorEventsArgs &args){ printf("newUserEvent ID %d\n", args.userID); }
+		void lostUserEvent(ofxUserGeneratorEventsArgs &args){ printf("lostUserEvent ID %d\n", args.userID); }
+		void poseDetectedEvent(ofxUserGeneratorEventsArgs &args){ printf("poseDetectedEvent ID %d\n", args.userID); }
+		void calibrationStartedEvent(ofxUserGeneratorEventsArgs &args){ printf("calibrationStartedEvent ID %d\n", args.userID); }
+		void calibrationEndedEvent(ofxUserGeneratorEventsArgs &args){ printf("calibrationEndedEvent ID %d\n", args.userID); }
+		void calibrationSucceededEvent(ofxUserGeneratorEventsArgs &args){ printf("calibrationSucceededEvent ID %d\n", args.userID); }
+		void calibrationFailedEvent(ofxUserGeneratorEventsArgs &args){ printf("calibrationFailedEvent ID %d\n", args.userID); }
+	
 		ofxOpenNIContext context;
 		ofxDepthGenerator depth;
 		ofxImageGenerator image;
